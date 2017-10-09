@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test plane of WebGL</title>
+</head>
+<body>
+<script src="ExcessorWebGL/GLObject.js"></script>
+<script src="source/scripts/script.js"></script>
+<script id="vertexShader" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexColor;
+    varying highp vec4 vColor;
+    varying vec2 vTextureCoords;
+
+    void main(void) {
+        gl_Position = vec4(aVertexPosition, 1.0);
+        vColor = vec4(aVertexColor, 1.0);
+        vTextureCoords = vec2(aVertexPosition.x,aVertexPosition.y);
+    }
+</script>
+<script id="fragmentShader" type="x-shader/x-fragment">
+    varying highp vec4 vColor;
+    precision highp float;
+    uniform sampler2D someTexture;
+    varying vec2 vTextureCoords;
+    void main(void) {
+        //gl_FragColor = vColor;
+        gl_FragColor = texture2D(someTexture, vTextureCoords);
+    }
+</script>
+</body>
+</html>
