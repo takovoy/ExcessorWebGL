@@ -17,24 +17,31 @@ window.addEventListener('load', function () {
     var program = drawing.InitShaderProgram(shaders).operationContext;
 
     var vertexBufferMap = [
-        0.5, 0.9, 1,
-        0.9, 0.1, 1,
-        0.1, 0.1, 1
+        -1, -1, 1,
+        1, -1, 1,
+        1, 1, 1,
+        -1, 1, 1
     ];
-    var colorBufferMap = [
-        1, 0, 0,
-        0, 1, 0,
-        0, 0, 1
+    var vertexBuffer = drawing.buffer(vertexBufferMap, 'vertexBuffer', {itemSize: 3}).operationContext;
+    drawing.attributeVariable(program, 'aVertexPosition', vertexBuffer, vertexBuffer.itemSize);
+
+    var textureBufferMap = [
+        0, 0,
+        1, 0,
+        1, 1,
+        0, 1
     ];
+    var textureBuffer = drawing.buffer(textureBufferMap, 'textureBuffer', {itemSize: 2}).operationContext;
+    drawing.attributeVariable(program, 'aTexturePosition', textureBuffer, textureBuffer.itemSize);
 
-    var vertexBuffer = drawing.attachBuffer(vertexBufferMap, 'vertexBuffer', {itemSize: 3}).operationContext;
-    var colorBuffer = drawing.attachBuffer(colorBufferMap, 'colorBuffer', {itemSize: 3}).operationContext;
+    var indexBufferMap = [
+        0, 1, 2,
+        0, 2, 3
+    ];
+    var indexBuffer = drawing.buffer(indexBufferMap, 'indexBuffer', null, 'ELEMENT_ARRAY_BUFFER', Uint16Array).operationContext;
 
-    drawing.attachVertexAttributeVariable(program, 'aVertexPosition', vertexBuffer, vertexBuffer.itemSize);
-    drawing.attachVertexAttributeVariable(program, 'aVertexColor', colorBuffer, colorBuffer.itemSize);
-
-    drawing.loadTexture('source/images/someTexture.jpg','someTexture',program, function () {
-        drawing.render(vertexBufferMap.length / vertexBuffer.itemSize);
+    drawing.loadTexture('source/images/someTexture.png','someTexture',program, function () {
+        drawing.render(6);
     });
 
 

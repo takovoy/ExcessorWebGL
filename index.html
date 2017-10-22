@@ -5,28 +5,26 @@
     <title>Test plane of WebGL</title>
 </head>
 <body>
-<script src="ExcessorWebGL/GLObject.js"></script>
+<script src="ExcessorWebGL/src/excessor.js"></script>
+<script src="ExcessorWebGL/src/GLDrawing.js"></script>
 <script src="source/scripts/script.js"></script>
 <script id="vertexShader" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
-    attribute vec3 aVertexColor;
-    varying highp vec4 vColor;
+    attribute vec2 aTexturePosition;
     varying vec2 vTextureCoords;
 
     void main(void) {
         gl_Position = vec4(aVertexPosition, 1.0);
-        vColor = vec4(aVertexColor, 1.0);
-        vTextureCoords = vec2(aVertexPosition.x,aVertexPosition.y);
+        vTextureCoords = aTexturePosition;
     }
 </script>
 <script id="fragmentShader" type="x-shader/x-fragment">
-    varying highp vec4 vColor;
     precision highp float;
     uniform sampler2D someTexture;
     varying vec2 vTextureCoords;
     void main(void) {
-        //gl_FragColor = vColor;
-        gl_FragColor = texture2D(someTexture, vTextureCoords);
+        vec2 textureCorrelation = vec2(vTextureCoords.x*2.0-0.5,vTextureCoords.y*2.0-0.5);
+        gl_FragColor = texture2D(someTexture, textureCorrelation);
     }
 </script>
 </body>
